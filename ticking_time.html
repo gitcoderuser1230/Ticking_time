@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motivation Clock</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    colors: {
+                        primary: '#3b82f6',
+                        dark: '#1e293b',
+                        light: '#f8fafc',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1e3a8a 0%, #0f172a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .card {
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.6);
+        }
+        
+        .time-unit {
+            transition: all 0.3s ease;
+        }
+        
+        .time-unit:hover {
+            transform: scale(1.05);
+        }
+        
+        .motivation-text {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .motivation-text::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+        
+        .motivation-text:hover::after {
+            transform: scaleX(1);
+        }
+        
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 5px rgba(59, 130, 246, 0.5);
+            }
+        }
+        
+        .glow {
+            animation: glow 3s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-4xl w-full mx-auto">
+        <div class="card bg-gradient-to-br from-slate-800/70 to-slate-900/70 rounded-3xl p-8 md:p-10 text-white overflow-hidden">
+            <!-- Header -->
+            <div class="text-center mb-10">
+                <h1 class="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 mb-2">Time is Precious</h1>
+                <p class="text-slate-300 motivation-text">Time remaining this year. Make every moment count!</p>
+            </div>
+            
+            <!-- Main Time Display -->
+            <div class="flex justify-center items-center mb-12">
+                <div class="bg-slate-700/50 p-6 rounded-2xl glow">
+                    <div id="current-time" class="text-4xl md:text-6xl font-mono font-bold text-center"></div>
+                    <div id="current-date" class="text-xl md:text-2xl text-center mt-2 text-slate-300"></div>
+                </div>
+            </div>
+            
+            <!-- Time Breakdown -->
+            <div class="text-center mb-6">
+                <h2 class="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500">
+                    Time Remaining This Year
+                </h2>
+                <p class="text-slate-300 mt-2">Make every moment count towards your goals!</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="months" class="text-3xl font-bold text-blue-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">MONTHS</div>
+                </div>
+                
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="weeks" class="text-3xl font-bold text-purple-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">WEEKS</div>
+                </div>
+                
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="days" class="text-3xl font-bold text-pink-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">DAYS</div>
+                </div>
+                
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="hours" class="text-3xl font-bold text-green-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">HOURS</div>
+                </div>
+                
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="minutes" class="text-3xl font-bold text-yellow-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">MINUTES</div>
+                </div>
+                
+                <div class="time-unit bg-slate-700/40 p-4 rounded-xl text-center">
+                    <div id="seconds" class="text-3xl font-bold text-red-400">0</div>
+                    <div class="text-sm text-slate-300 mt-1">SECONDS</div>
+                </div>
+            </div>
+            
+            <!-- Motivational Quote -->
+            <div class="text-center p-4 bg-slate-700/30 rounded-xl mb-8">
+                <p id="motivation-quote" class="text-lg italic text-slate-200">"The future depends on what you do today."</p>
+                <p id="quote-author" class="mt-2 text-slate-400">- Mahatma Gandhi</p>
+            </div>
+            
+            <!-- Footer -->
+            <div class="text-center text-slate-400 text-sm">
+                <p>Time is ticking! Make the most of what's left this year!</p>
+                <p class="mt-2 flex items-center justify-center">
+                    <span class="mr-2">Made with</span>
+                    <span class="text-red-500"><i class="fas fa-heart"></i></span>
+                    <span class="ml-2">to help you value your time</span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Motivational quotes array
+        const quotes = [
+            {text: "The future depends on what you do today.", author: "Mahatma Gandhi"},
+            {text: "Time is what we want most, but what we use worst.", author: "William Penn"},
+            {text: "Your time is limited, so don't waste it living someone else's life.", author: "Steve Jobs"},
+            {text: "The key is in not spending time, but in investing it.", author: "Stephen R. Covey"},
+            {text: "Lost time is never found again.", author: "Benjamin Franklin"},
+            {text: "Time is the most valuable thing a man can spend.", author: "Theophrastus"},
+            {text: "Don't watch the clock; do what it does. Keep going.", author: "Sam Levenson"},
+            {text: "The way we spend our time defines who we are.", author: "Jonathan Estrin"}
+        ];
+        
+        // DOM Elements
+        const currentTimeElement = document.getElementById('current-time');
+        const currentDateElement = document.getElementById('current-date');
+        const monthsElement = document.getElementById('months');
+        const weeksElement = document.getElementById('weeks');
+        const daysElement = document.getElementById('days');
+        const hoursElement = document.getElementById('hours');
+        const minutesElement = document.getElementById('minutes');
+        const secondsElement = document.getElementById('seconds');
+        const motivationQuoteElement = document.getElementById('motivation-quote');
+        const quoteAuthorElement = document.getElementById('quote-author');
+        
+        // Update time function
+        function updateTime() {
+            const now = new Date();
+            
+            // Update current time and date
+            currentTimeElement.textContent = now.toLocaleTimeString();
+            currentDateElement.textContent = now.toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // Calculate remaining time until end of year
+            const endOfYear = new Date(now.getFullYear(), 11, 31, 23, 59, 59, 999);
+            const diff = endOfYear - now;
+            
+            // Convert milliseconds to various time units
+            const totalSeconds = Math.floor(diff / 1000);
+            const totalMinutes = Math.floor(totalSeconds / 60);
+            const totalHours = Math.floor(totalMinutes / 60);
+            const totalDays = Math.floor(totalHours / 24);
+            
+            // Calculate remaining time breakdown
+            const seconds = totalSeconds % 60;
+            const minutes = totalMinutes % 60;
+            const hours = totalHours % 24;
+            const days = totalDays;
+            const weeks = Math.floor(totalDays / 7);
+            const months = Math.floor(totalDays / 30.44); // Average month length
+            
+            // Update time breakdown elements
+            monthsElement.textContent = months;
+            weeksElement.textContent = weeks;
+            daysElement.textContent = days;
+            hoursElement.textContent = hours;
+            minutesElement.textContent = minutes;
+            secondsElement.textContent = seconds;
+        }
+        
+        // Update quote function
+        function updateQuote() {
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            motivationQuoteElement.textContent = `"${randomQuote.text}"`;
+            quoteAuthorElement.textContent = `- ${randomQuote.author}`;
+            
+            // Add animation class
+            motivationQuoteElement.classList.add('opacity-0');
+            quoteAuthorElement.classList.add('opacity-0');
+            
+            setTimeout(() => {
+                motivationQuoteElement.classList.remove('opacity-0');
+                quoteAuthorElement.classList.remove('opacity-0');
+            }, 100);
+        }
+        
+        // Initial update
+        updateTime();
+        updateQuote();
+        
+        // Set intervals for updates
+        setInterval(updateTime, 1000);
+        setInterval(updateQuote, 10000); // Change quote every 10 seconds
+        
+        // Add hover effects to time units
+        const timeUnits = document.querySelectorAll('.time-unit');
+        timeUnits.forEach(unit => {
+            unit.addEventListener('mouseenter', () => {
+                unit.classList.add('bg-slate-700/60');
+            });
+            
+            unit.addEventListener('mouseleave', () => {
+                unit.classList.remove('bg-slate-700/60');
+            });
+        });
+    </script>
+</body>
+</html>
